@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ProductsPage extends BasePage {
     private By pageTitle      = By.className("title");
@@ -13,5 +14,8 @@ public class ProductsPage extends BasePage {
 
     public void addBackpackToCart() { click(addBackpackBtn); }
 
-    public void openCart() { click(cartIcon); }
+    public void openCart() {
+        click(cartIcon);
+        wait.until(ExpectedConditions.urlContains("cart.html"));
+    }
 }

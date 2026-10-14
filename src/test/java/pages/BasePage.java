@@ -1,4 +1,4 @@
-// package pages;
+package pages;
 
 import java.time.Duration;
 
@@ -18,13 +18,20 @@ public class BasePage {
     }
 
     protected void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        WebElement el = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", el);
+        try {
+            el.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
+        }
     }
 
     protected void type(By locator, String text) {
         WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         el.clear();
         el.sendKeys(text);
+        wait.until(ExpectedConditions.attributeToBe(locator, "value", text));
     }
 
     protected String getText(By locator) {

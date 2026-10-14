@@ -13,13 +13,19 @@ public class CheckoutPage extends BasePage {
 
     public CheckoutPage(WebDriver driver) { super(driver); }
 
-    public void startCheckout() { click(checkoutBtn); }
+    public void startCheckout() {
+        WebElement button = wait.until(
+                org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable(checkoutBtn));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.urlContains("checkout-step-one"));
+    }
 
     public void fillDetails(String first, String last, String zip) {
         type(firstName, first);
         type(lastName, last);
         type(postalCode, zip);
         click(continueBtn);
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.urlContains("checkout-step-two"));
     }
 
     public void finishOrder() { click(finishBtn); }
